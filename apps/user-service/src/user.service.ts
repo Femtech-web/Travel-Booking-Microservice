@@ -1,0 +1,207 @@
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { compare, hash } from 'bcrypt';
+import { UserEntity } from './entities/user.entity';
+import { UserRepository } from './repository/user.repository';
+import {
+  isNull,
+  isUndefined,
+  CommonService,
+  ChangeEmailDto,
+  PasswordDto,
+  UpdateUserDto,
+} from '@app/common';
+
+@Injectable()
+export class UserService {
+  constructor(
+    private readonly usersRepository: UserRepository,
+    private readonly commonService: CommonService,
+  ) {}
+
+  public async create(
+    email: string,
+    name: string,
+    password?: string,
+  ): Promise<UserEntity> {
+    const formattedEmail = email.toLowerCase();
+    await this.checkEmailUniqueness(formattedEmail);
+    const formattedName = this.commonService.formatName(name);
+    const user = this.usersRepository.create({
+      email: formattedEmail,
+      name: formattedName,
+      password: await hash(password, 10),
+      isConfirmed: false,
+    });
+    await this.commonService.saveEntity(user);
+    return user;
+  }
+
+  public async findOneById(id: string): Promise<UserEntity> {
+    const user = await this.usersRepository.findOneById(id);
+    this.commonService.checkEntityExistence(user, 'User');
+    return user;
+  }
+
+  public async findOneByEmail(email: string): Promise<UserEntity> {
+    const formattedEmail = email.toLowerCase();
+    const user = await this.usersRepository.findOneByEmail(formattedEmail);
+    this.throwUnauthorizedException(user);
+    return user;
+  }
+
+  public async uncheckedUserByEmail(email: string): Promise<UserEntity> {
+    const formattedEmail = email.toLowerCase();
+    return this.usersRepository.findOneByEmail(formattedEmail);
+  }
+
+  public async findOneByCredentials(
+    id: string,
+    version: number,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.findOneById(id);
+    this.throwUnauthorizedException(user);
+
+    if (user.credentials.version !== version) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    return user;
+  }
+
+  public async confirmEmail(
+    userId: string,
+    version: number,
+  ): Promise<UserEntity> {
+    const user = await this.findOneByCredentials(userId, version);
+
+    if (user.isConfirmed) {
+      throw new BadRequestException('Email already confirmed');
+    }
+
+    await this.usersRepository.updateVersion(userId);
+    const data = { isConfirmed: true };
+    const updatedUser = this.usersRepository.update(userId, data);
+
+    await this.commonService.saveEntity(updatedUser);
+    return updatedUser;
+  }
+
+  public async update(userId: string, dto: UpdateUserDto): Promise<UserEntity> {
+    const user = await this.findOneById(userId);
+    const { name } = dto;
+
+    if (!isUndefined(name) && !isNull(name)) {
+      if (name === user.name) {
+        throw new BadRequestException('Name must be different');
+      }
+
+      user.name = this.commonService.formatName(name);
+    }
+
+    await this.commonService.saveEntity(user);
+    return user;
+  }
+
+  public async updatePassword(
+    userId: string,
+    newPassword: string,
+    password?: string,
+  ): Promise<UserEntity> {
+    const user = await this.findOneById(userId);
+
+    if (isUndefined(password) || isNull(password)) {
+      throw new BadRequestException('Password is required');
+    }
+    if (!(await compare(password, user.password))) {
+      throw new BadRequestException('Wrong password');
+    }
+    if (await compare(newPassword, user.password)) {
+      throw new BadRequestException('New password must be different');
+    }
+
+    return await this.changePassword(user, newPassword);
+  }
+
+  public async resetPassword(
+    userId: string,
+    version: number,
+    password: string,
+  ): Promise<UserEntity> {
+    const user = await this.findOneByCredentials(userId, version);
+    return await this.changePassword(user, password);
+  }
+
+  public async updateEmail(
+    userId: string,
+    dto: ChangeEmailDto,
+  ): Promise<UserEntity> {
+    const user = await this.findOneById(userId);
+    const { email, password } = dto;
+
+    if (!(await compare(password, user.password))) {
+      throw new BadRequestException('Wrong password');
+    }
+
+    const formattedEmail = email.toLowerCase();
+
+    if (user.email === formattedEmail) {
+      throw new BadRequestException('Email should be different');
+    }
+
+    await this.checkEmailUniqueness(formattedEmail);
+    const data = {
+      email: formattedEmail,
+    };
+    const updatedUser = this.usersRepository.update(userId, data);
+    await this.commonService.saveEntity(updatedUser);
+    return updatedUser;
+  }
+
+  public async delete(userId: string, dto: PasswordDto): Promise<UserEntity> {
+    const user = await this.findOneById(userId);
+
+    if (!(await compare(dto.password, user.password))) {
+      throw new BadRequestException('Wrong password');
+    }
+
+    const deletedUser = await this.usersRepository.remove(userId);
+    return deletedUser;
+  }
+
+  private async changePassword(
+    user: UserEntity,
+    password: string,
+  ): Promise<UserEntity> {
+    const userId = user.id;
+    const oldPassword = user.password;
+    const updatedUser = await this.usersRepository.updatePassword(
+      userId,
+      oldPassword,
+      password,
+    );
+
+    await this.commonService.saveEntity(updatedUser);
+    return updatedUser;
+  }
+
+  private throwUnauthorizedException(
+    user: undefined | null | UserEntity,
+  ): void {
+    if (isUndefined(user) || isNull(user)) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+  }
+
+  private async checkEmailUniqueness(email: string): Promise<void> {
+    const existingEmail = await this.findOneByEmail(email);
+
+    if (existingEmail) {
+      throw new ConflictException('Email already in use');
+    }
+  }
+}
