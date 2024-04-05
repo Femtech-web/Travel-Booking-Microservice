@@ -136,10 +136,14 @@ export class CommonService {
    * - @param {IMessagePattern} pattern - object containing the pattern for a message (i.e. `{cmd: 'create' }`)
    * - @param {*} data - data to send to the microservice client
    *
-   * @return {*}  {Promise<any>} - returned response from a microservice or an adequate HTTP exception
+   * @return {*} Promise<any> - returned response from a microservice or an adequate HTTP exception
    */
 
-  public async sendEvent(client: ClientProxy, pattern: IPattern, data: any) {
+  public async sendEvent(
+    client: ClientProxy,
+    pattern: IPattern,
+    data: any,
+  ): Promise<any> {
     const observableRes = client.send(pattern, data);
     return await lastValueFrom(observableRes);
   }

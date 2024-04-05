@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { UserEntity, BaseInterfaceRepository } from '@app/common';
+import {
+  UserEntity,
+  BaseInterfaceRepository,
+  IPaginationQuery,
+} from '@app/common';
 import { hash } from 'bcrypt';
 
 @Injectable()
@@ -11,6 +15,34 @@ export class UserRepository extends BaseInterfaceRepository<UserEntity> {
 
   public modelName(): keyof PrismaClient {
     return 'user';
+  }
+
+  public omit(obj: any, ...props: any[]) {
+    const result = { ...obj };
+    props.forEach((prop) => delete result[prop]);
+    return result;
+  }
+
+  public async getAllUsers(params: IPaginationQuery) {
+    const filteredParams = this.omit(params, 'page', 'perPage');
+
+    const users = await this.findAll({
+      where: filteredParams,
+      skip: params.perPage * params.page - params.perPage,
+      take: params.perPage,
+    });
+
+    return users;
+  }
+
+  public async countDocuments(params: IPaginationQuery) {
+    const filteredParams = this.omit(params, 'page', 'perPage');
+
+    const totalCount = await this.countAll({
+      where: filteredParams,
+    });
+
+    return totalCount;
   }
 
   public async createUser(

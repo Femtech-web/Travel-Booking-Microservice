@@ -38,6 +38,8 @@ export * from './dtos/users/change-email.dto';
 export * from './dtos/users/get-user-params.dto';
 export * from './dtos/users/password.dto';
 export * from './dtos/users/update-user.dto';
+// dtos - others
+export * from './dtos/pagination-query.dto';
 // entities
 export * from './entities/user-credentials.entity';
 export * from './entities/user.entity';
@@ -59,3 +61,4 @@ export * from './interfaces/email-config.interface';
 export * from './interfaces/message.interface';
 export * from './interfaces/credentials.interface';
 export * from './interfaces/custom-request.interface';
+export * from './interfaces/pagination-query.interface';

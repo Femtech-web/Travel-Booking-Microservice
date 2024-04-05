@@ -3,6 +3,7 @@ import {
   Controller,
   Res,
   Inject,
+  Query,
   Get,
   Patch,
   Param,
@@ -18,6 +19,7 @@ import {
   UpdateUserDto,
   ChangeEmailDto,
   PasswordDto,
+  PaginationQueryDto,
 } from '@app/common';
 import { Response } from 'express';
 import { ClientProxy } from '@nestjs/microservices';
@@ -35,6 +37,17 @@ export class UserGateway {
       this.userService,
       { cmd: 'get-me' },
       { id },
+    );
+  }
+
+  @Get()
+  public async GetAllUsers(
+    @Query() params: PaginationQueryDto,
+  ): Promise<IAuthResponseUser> {
+    return await this.commonService.sendEvent(
+      this.userService,
+      { cmd: 'fetch-all-users' },
+      { ...params },
     );
   }
 

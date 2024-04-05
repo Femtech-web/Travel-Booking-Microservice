@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { IRepository } from './base.interface.repository';
+import { IParams } from './query-find-all.interface';
 
 export abstract class BaseInterfaceRepository<T> implements IRepository<T> {
   protected readonly prisma: PrismaClient;
@@ -36,8 +37,12 @@ export abstract class BaseInterfaceRepository<T> implements IRepository<T> {
     });
   }
 
-  public async findAll(): Promise<T[]> {
-    return await this.prisma[this.modelName()].findMany();
+  public async findAll(params: IParams): Promise<T[]> {
+    return await this.prisma[this.modelName()].findMany(params);
+  }
+
+  public async countAll(params: IParams): Promise<number> {
+    return this.prisma[this.modelName()].count(params);
   }
 
   public async remove(id: string): Promise<T | null> {

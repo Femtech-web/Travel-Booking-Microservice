@@ -16,11 +16,13 @@ import {
   UpdateUserDto,
   IResponseUser,
   ResponseUserMapper,
+  PaginationQueryDto,
+  IUser,
 } from '@app/common';
 import { UserService } from './user.service';
 import { CommonService } from '@app/common';
 
-@Controller('api/users')
+@Controller()
 export class UserController {
   private cookiePath = '/api/auth';
   private cookieName: string;
@@ -104,6 +106,17 @@ export class UserController {
     return AuthResponseUserMapper.map(user);
   }
 
+  @MessagePattern({ cmd: 'fetch-all-users' })
+  public async fetchUsers(
+    @Payload() params: PaginationQueryDto,
+    @Ctx() context: RmqContext,
+  ): Promise<IAuthResponseUser[]> {
+    this.commonService.acknowledgeMessage(context);
+
+    const users = await this.usersService.fetchAllUsers(params);
+    return await this.formatReturnedUsers(users);
+  }
+
   @MessagePattern({ cmd: 'get-single-user' })
   public async getUser(
     @Payload() params: GetUserParams,
@@ -153,5 +166,15 @@ export class UserController {
       .clearCookie(this.cookieName, { path: this.cookiePath })
       .status(HttpStatus.NO_CONTENT)
       .send();
+  }
+
+  private async formatReturnedUsers(
+    users: IUser[],
+  ): Promise<IAuthResponseUser[]> {
+    const formattedUsers = users.map((user) => {
+      return AuthResponseUserMapper.map(user);
+    });
+
+    return formattedUsers;
   }
 }

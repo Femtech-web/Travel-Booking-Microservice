@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import {
   BadRequestException,
   ConflictException,
@@ -52,6 +53,26 @@ export class UserService {
     const user = await this.usersRepository.findOneByEmail(formattedEmail);
     this.throwUnauthorizedException(user);
     return user;
+  }
+
+  public async fetchAllUsers(queryParams): Promise<UserEntity[]> {
+    let params = {
+      page: 1,
+      perPage: 10,
+      ...queryParams,
+    };
+
+    // Dynamically created query params based on endpoint params
+    for (const key in queryParams) {
+      if (Object.prototype.hasOwnProperty.call(queryParams, key)) {
+        params[key] = queryParams[key];
+      }
+    }
+    // predefined query params (apart from dynamically) for pagination
+    params.page = params.page ? parseInt(params.page, 10) : 1;
+    params.perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
+
+    return await this.usersRepository.getAllUsers(params);
   }
 
   public async uncheckedUserByEmail(email: string): Promise<UserEntity> {
