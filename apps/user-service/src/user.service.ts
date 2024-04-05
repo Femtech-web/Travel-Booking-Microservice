@@ -32,25 +32,31 @@ export class UserService {
     const formattedEmail = email.toLowerCase();
     await this.checkEmailUniqueness(formattedEmail);
     const formattedName = this.commonService.formatName(name);
-    const user = this.usersRepository.create({
-      email: formattedEmail,
-      name: formattedName,
-      password: await hash(password, 10),
-      isConfirmed: false,
+    const user = await this.usersRepository.create({
+      data: {
+        email: formattedEmail,
+        name: formattedName,
+        password: await hash(password, 10),
+        isConfirmed: false,
+      },
     });
     await this.commonService.saveEntity(user);
     return user;
   }
 
   public async findOneById(id: string): Promise<UserEntity> {
-    const user = await this.usersRepository.findOneById(id);
+    const user = await this.usersRepository.findUnique({
+      where: { id },
+    });
     this.commonService.checkEntityExistence(user, 'User');
     return user;
   }
 
   public async findOneByEmail(email: string): Promise<UserEntity> {
     const formattedEmail = email.toLowerCase();
-    const user = await this.usersRepository.findOneByEmail(formattedEmail);
+    const user = await this.usersRepository.findUnique({
+      where: { email: formattedEmail },
+    });
     this.throwUnauthorizedException(user);
     return user;
   }
@@ -77,14 +83,18 @@ export class UserService {
 
   public async uncheckedUserByEmail(email: string): Promise<UserEntity> {
     const formattedEmail = email.toLowerCase();
-    return this.usersRepository.findOneByEmail(formattedEmail);
+    return await this.usersRepository.findUnique({
+      where: { email: formattedEmail },
+    });
   }
 
   public async findOneByCredentials(
     id: string,
     version: number,
   ): Promise<UserEntity> {
-    const user = await this.usersRepository.findOneById(id);
+    const user = await this.usersRepository.findUnique({
+      where: { id },
+    });
     this.throwUnauthorizedException(user);
 
     if (user.credentials.version !== version) {
@@ -106,7 +116,10 @@ export class UserService {
 
     await this.usersRepository.updateVersion(userId);
     const data = { isConfirmed: true };
-    const updatedUser = this.usersRepository.update(userId, data);
+    const updatedUser = await this.usersRepository.update({
+      where: { id: userId },
+      data,
+    });
 
     await this.commonService.saveEntity(updatedUser);
     return updatedUser;
@@ -178,7 +191,10 @@ export class UserService {
     const data = {
       email: formattedEmail,
     };
-    const updatedUser = this.usersRepository.update(userId, data);
+    const updatedUser = await this.usersRepository.update({
+      where: { id: userId },
+      data,
+    });
     await this.commonService.saveEntity(updatedUser);
     return updatedUser;
   }
@@ -190,7 +206,9 @@ export class UserService {
       throw new BadRequestException('Wrong password');
     }
 
-    const deletedUser = await this.usersRepository.remove(userId);
+    const deletedUser = await this.usersRepository.delete({
+      where: { id: userId },
+    });
     return deletedUser;
   }
 

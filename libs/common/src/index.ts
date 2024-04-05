@@ -2,6 +2,7 @@
 export * from './modules/common.module';
 // services
 export * from './services/common.service';
+export * from './services/prisma.service';
 // mappers - auth
 export * from './mappers/auth/auth-response-user.mapper';
 export * from './mappers/auth/auth-response.mapper';

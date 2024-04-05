@@ -6,7 +6,15 @@ import { CommonModule, AuthGuard } from '@app/common';
 import { AuthGatewayModule, UserGatewayModule } from './modules';
 
 @Module({
-  imports: [CommonModule, AuthGatewayModule, UserGatewayModule],
+  imports: [
+    CommonModule.registerRmq('TOKEN_SERVICE', process.env.RABBITMQ_TOKEN_QUEUE),
+    CommonModule.registerRmq(
+      'MAILER_SERVICE',
+      process.env.RABBITMQ_MAILER_QUEUE,
+    ),
+    AuthGatewayModule,
+    UserGatewayModule,
+  ],
   controllers: [ApiGatewayController],
   providers: [
     ApiGatewayService,

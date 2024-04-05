@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IConfig } from '../interfaces/config.interface';
+import { redisUrlParser } from '../utils/redis-url-parser.util';
 
 export function config(): IConfig {
   const publicKey = readFileSync(
@@ -20,6 +21,7 @@ export function config(): IConfig {
     refresh_cookie: process.env.REFRESH_COOKIE,
     cookie_secret: process.env.COOKIE_SECRET,
     testing: process.env.TESTING === 'true',
+    redis: redisUrlParser(process.env.REDIS_URL),
     rabbitmqQueues: {
       authQueue: process.env.RABBITMQ_AUTH_QUEUE,
       tokenQueue: process.env.RABBITMQ_TOKEN_QUEUE,

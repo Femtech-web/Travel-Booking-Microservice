@@ -15,7 +15,7 @@ export class TokenController {
     private readonly commonService: CommonService,
   ) {}
 
-  @MessagePattern('generate-auth-tokens')
+  @MessagePattern({ cmd: 'generate-auth-tokens' })
   public async generateAuthTokens(
     @Payload() data: any,
     @Ctx() context: RmqContext,
@@ -27,7 +27,7 @@ export class TokenController {
     return this.tokenService.generateAuthTokens(user, domain, tokenId);
   }
 
-  @MessagePattern('generate-token')
+  @MessagePattern({ cmd: 'generate-token' })
   public async generateToken(@Payload() data: any, @Ctx() context: RmqContext) {
     console.log('data', data);
     const { user, tokenType, domain, tokenId } = data;
@@ -36,7 +36,7 @@ export class TokenController {
     return this.tokenService.generateToken(user, tokenType, domain, tokenId);
   }
 
-  @MessagePattern('verify-token')
+  @MessagePattern({ cmd: 'verify-token' })
   public async verifyToken(@Payload() data: any, @Ctx() context: RmqContext) {
     console.log('data', data);
     const { token, tokenType } = data;

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -9,8 +9,6 @@ import rateLimit from 'express-rate-limit';
 import { rateLimitConfigObject } from './security/configs';
 import { TimeoutInterceptor } from './interceptors';
 import { ErrorFilter } from './filters';
-
-const logger = new Logger('ApiGateway');
 
 async function bootstrap() {
   const app = await NestFactory.create(ApiGatewayModule);
@@ -28,6 +26,5 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TimeoutInterceptor());
   app.useGlobalFilters(new ErrorFilter());
   await app.listen(5000);
-  logger.log(`ApiGateway is listening on port ${5000}`);
 }
 bootstrap();

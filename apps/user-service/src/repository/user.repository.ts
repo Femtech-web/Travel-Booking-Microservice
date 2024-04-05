@@ -1,20 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import {
-  UserEntity,
   BaseInterfaceRepository,
   IPaginationQuery,
+  PrismaService,
 } from '@app/common';
+import { User as userModel } from '@prisma/client';
 import { hash } from 'bcrypt';
 
 @Injectable()
-export class UserRepository extends BaseInterfaceRepository<UserEntity> {
-  constructor(prisma: PrismaClient) {
-    super(prisma);
-  }
-
-  public modelName(): keyof PrismaClient {
-    return 'user';
+export class UserRepository extends BaseInterfaceRepository<'user'> {
+  constructor() {
+    super(new PrismaService());
   }
 
   public omit(obj: any, ...props: any[]) {
@@ -26,7 +22,7 @@ export class UserRepository extends BaseInterfaceRepository<UserEntity> {
   public async getAllUsers(params: IPaginationQuery) {
     const filteredParams = this.omit(params, 'page', 'perPage');
 
-    const users = await this.findAll({
+    const users = await this.findMany({
       where: filteredParams,
       skip: params.perPage * params.page - params.perPage,
       take: params.perPage,
@@ -38,7 +34,7 @@ export class UserRepository extends BaseInterfaceRepository<UserEntity> {
   public async countDocuments(params: IPaginationQuery) {
     const filteredParams = this.omit(params, 'page', 'perPage');
 
-    const totalCount = await this.countAll({
+    const totalCount = await this.count({
       where: filteredParams,
     });
 
@@ -46,9 +42,9 @@ export class UserRepository extends BaseInterfaceRepository<UserEntity> {
   }
 
   public async createUser(
-    data: Omit<UserEntity, 'id' | 'createdAt' | 'updatedAt'>,
-  ): Promise<UserEntity> {
-    return await this.prisma.user.create({
+    data: Omit<userModel, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<userModel> {
+    return await this.create({
       data: {
         ...data,
         credentials: {
@@ -67,9 +63,9 @@ export class UserRepository extends BaseInterfaceRepository<UserEntity> {
     id: string,
     oldPassword: string,
     newPassword: string,
-  ): Promise<UserEntity> {
+  ): Promise<userModel> {
     const hashedPassword = await hash(newPassword, 10);
-    return await this.prisma.user.update({
+    return await this.update({
       where: { id },
       data: {
         password: hashedPassword,
@@ -87,8 +83,8 @@ export class UserRepository extends BaseInterfaceRepository<UserEntity> {
     });
   }
 
-  public async updateVersion(id: string): Promise<UserEntity> {
-    return await this.prisma.user.update({
+  public async updateVersion(id: string): Promise<userModel> {
+    return await this.update({
       where: { id },
       data: {
         credentials: {

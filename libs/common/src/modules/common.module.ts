@@ -1,8 +1,10 @@
-import { Module, DynamicModule } from '@nestjs/common';
+import { Module, DynamicModule, CacheModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { CommonService } from '../services/common.service';
+import { PrismaService } from '../services/prisma.service';
 import { config } from '../configs/config';
+import { CacheConfig } from '../config/cache.config';
 // import { validationSchema } from '../configs/config.schema';
 
 @Module({
@@ -11,9 +13,14 @@ import { config } from '../configs/config';
       isGlobal: true,
       load: [config],
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      useClass: CacheConfig,
+    }),
   ],
-  providers: [CommonService],
-  exports: [CommonService],
+  providers: [CommonService, PrismaService],
+  exports: [CommonService, PrismaService],
 })
 export class CommonModule {
   static registerRmq(service: string, queue: string): DynamicModule {
