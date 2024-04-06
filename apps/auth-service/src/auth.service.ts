@@ -36,7 +36,7 @@ export class AuthService {
     @Inject('MAILER_SERVICE') private readonly mailerService: ClientProxy,
     @Inject('USER_SERVICE') private readonly userService: ClientProxy,
     private readonly commonService: CommonService,
-  ) { }
+  ) {}
 
   public async signUp(dto: SignUpDto, domain?: string): Promise<IMessage> {
     const { name, email, password1, password2 } = dto;

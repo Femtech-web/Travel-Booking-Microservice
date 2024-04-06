@@ -27,19 +27,18 @@ export class UserService {
   public async create(
     email: string,
     name: string,
-    password?: string,
+    password1?: string,
   ): Promise<UserEntity> {
     const formattedEmail = email.toLowerCase();
     await this.checkEmailUniqueness(formattedEmail);
     const formattedName = this.commonService.formatName(name);
-    const user = await this.usersRepository.create({
-      data: {
-        email: formattedEmail,
-        name: formattedName,
-        password: await hash(password, 10),
-        isConfirmed: false,
-      },
+    const user = await this.usersRepository.createUser({
+      email: formattedEmail,
+      name: formattedName,
+      password: await hash(password1, 10),
+      isConfirmed: false,
     });
+    console.log(`returned created user ==== ${user}`);
     await this.commonService.saveEntity(user);
     return user;
   }
@@ -237,7 +236,7 @@ export class UserService {
   }
 
   private async checkEmailUniqueness(email: string): Promise<void> {
-    const existingEmail = await this.findOneByEmail(email);
+    const existingEmail = await this.uncheckedUserByEmail(email);
 
     if (existingEmail) {
       throw new ConflictException('Email already in use');

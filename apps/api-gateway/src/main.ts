@@ -25,6 +25,7 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new TimeoutInterceptor());
   app.useGlobalFilters(new ErrorFilter());
-  await app.listen(5000);
+
+  await app.listen(8000);
 }
 bootstrap();

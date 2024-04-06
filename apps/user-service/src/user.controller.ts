@@ -38,10 +38,10 @@ export class UserController {
   @MessagePattern({ cmd: 'create-user' })
   public async Create(@Payload() data: any, @Ctx() context: RmqContext) {
     console.log('data', data);
-    const { email, name, password } = data;
+    const { email, name, password1 } = data;
     this.commonService.acknowledgeMessage(context);
 
-    return this.usersService.create(email, name, password);
+    return this.usersService.create(email, name, password1);
   }
 
   @MessagePattern({ cmd: 'find-by-email' })

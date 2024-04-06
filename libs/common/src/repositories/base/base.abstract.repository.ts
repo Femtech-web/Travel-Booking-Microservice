@@ -6,64 +6,77 @@ export abstract class BaseInterfaceRepository<
   T extends Exclude<keyof PrismaClient, symbol | `$${string}`>,
 > implements IRepository
 {
-  public readonly model!: T;
+  public model!: T;
 
   constructor(private readonly prisma: PrismaService) {}
 
   public async aggregate(...args: Parameters<PrismaClient[T]['aggregate']>) {
-    return (this.prisma[this.model].aggregate as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].aggregate as any)(params);
   }
 
   public async count(...args: Parameters<PrismaClient[T]['count']>) {
-    return (this.prisma[this.model].count as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].count as any)(params);
   }
 
   public async create(...args: Parameters<PrismaClient[T]['create']>) {
-    return (this.prisma[this.model].create as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].create as any)(params);
   }
 
   public async createMany(...args: Parameters<PrismaClient[T]['createMany']>) {
-    return (this.prisma[this.model].createMany as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].createMany as any)(params);
   }
 
   public async delete(...args: Parameters<PrismaClient[T]['delete']>) {
-    return (this.prisma[this.model].delete as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].delete as any)(params);
   }
 
   public async findFirst(...args: Parameters<PrismaClient[T]['findFirst']>) {
-    return (this.prisma[this.model].findFirst as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].findFirst as any)(params);
   }
 
   public async findFirstOrThrow(
     ...args: Parameters<PrismaClient[T]['findFirstOrThrow']>
   ) {
-    return (this.prisma[this.model].findFirstOrThrow as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].findFirstOrThrow as any)(params);
   }
 
   public async findMany(...args: Parameters<PrismaClient[T]['findMany']>) {
-    return (this.prisma[this.model].findMany as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].findMany as any)(params);
   }
 
   public async findUnique(...args: Parameters<PrismaClient[T]['findUnique']>) {
-    return (this.prisma[this.model].findUnique as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].findUnique as any)(params);
   }
 
   public async findUniqueOrThrow(
     ...args: Parameters<PrismaClient[T]['findUniqueOrThrow']>
   ) {
-    return (this.prisma[this.model].findUniqueOrThrow as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].findUniqueOrThrow as any)(params);
   }
 
   public async update(...args: Parameters<PrismaClient[T]['update']>) {
-    return (this.prisma[this.model].update as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].update as any)(params);
   }
 
   public async updateMany(...args: Parameters<PrismaClient[T]['updateMany']>) {
-    return (this.prisma[this.model].updateMany as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].updateMany as any)(params);
   }
 
   public async upsert(...args: Parameters<PrismaClient[T]['upsert']>) {
-    return (this.prisma[this.model].upsert as any)(...args);
+    const params = args[0];
+    return (this.prisma[this.model].upsert as any)(params);
   }
 }
 // export abstract class BaseInterfaceRepository<T> implements IRepository<T> {

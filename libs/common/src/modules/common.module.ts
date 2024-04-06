@@ -1,10 +1,11 @@
-import { Module, DynamicModule, CacheModule } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { CommonService } from '../services/common.service';
 import { PrismaService } from '../services/prisma.service';
 import { config } from '../configs/config';
-import { CacheConfig } from '../config/cache.config';
+import { CacheConfig } from '../configs/cache.config';
 // import { validationSchema } from '../configs/config.schema';
 
 @Module({

@@ -7,5 +7,6 @@ import { CommonModule } from '@app/common';
   imports: [CommonModule],
   controllers: [MailerController],
   providers: [MailerService],
+  exports: [MailerService],
 })
 export class MailerModule {}

@@ -46,13 +46,15 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
-    "mailer-consumer": {
+    "mailer": {
       "type": "application",
       "root": "apps/mailer",
       "entryFile": "main",
       "sourceRoot": "apps/mailer/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/mailer/tsconfig.app.json"
+        "tsConfigPath": "apps/mailer/tsconfig.app.json",
+        "assets": [{ "include": "**/templates/**/*", "outDir": "dist/apps/mailer" }],
+        "watchAssets": true
       }
     },
     "token": {

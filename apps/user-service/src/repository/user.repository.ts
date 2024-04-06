@@ -11,6 +11,7 @@ import { hash } from 'bcrypt';
 export class UserRepository extends BaseInterfaceRepository<'user'> {
   constructor() {
     super(new PrismaService());
+    this.model = 'user';
   }
 
   public omit(obj: any, ...props: any[]) {
@@ -55,6 +56,9 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
             updatedAt: 0,
           },
         },
+      },
+      include: {
+        credentials: true,
       },
     });
   }

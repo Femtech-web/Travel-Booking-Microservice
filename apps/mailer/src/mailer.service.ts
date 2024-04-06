@@ -81,7 +81,6 @@ export class MailerService {
       // create a new transporter with the necessary details of your Oauth2
       const transporter: Transporter<SMTPTransport.SentMessageInfo> =
         createTransport({
-          service: this.service,
           host: this.host,
           port: this.port,
           secure: true,
