@@ -3,6 +3,7 @@ import { ApiGatewayModule } from './api-gateway.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
+import * as compression from 'compression';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 
@@ -18,6 +19,7 @@ async function bootstrap() {
   app.use(cookieParser(cookieSecret));
   app.use(helmet());
   app.use(rateLimit(rateLimitConfigObject));
+  app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

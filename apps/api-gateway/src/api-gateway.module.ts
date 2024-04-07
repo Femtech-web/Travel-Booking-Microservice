@@ -4,6 +4,7 @@ import { ApiGatewayController } from './api-gateway.controller';
 import { ApiGatewayService } from './api-gateway.service';
 import { CommonModule, AuthGuard } from '@app/common';
 import { AuthGatewayModule, UserGatewayModule } from './modules';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthGatewayModule, UserGatewayModule } from './modules';
     // ),
     AuthGatewayModule,
     UserGatewayModule,
+    HealthModule,
   ],
   controllers: [ApiGatewayController],
   providers: [

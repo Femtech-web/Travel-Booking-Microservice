@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { IConfig } from '../interfaces/config.interface';
+import { IConfig } from '../interfaces/configs/config.interface';
 import { redisUrlParser } from '../utils/redis-url-parser.util';
 
 export function config(): IConfig {
@@ -59,6 +59,12 @@ export function config(): IConfig {
         user: process.env.EMAIL_USER,
         redirectUrl: process.env.EMAIL_REDIRECT_URL,
       },
+    },
+    mongodb_config: {
+      host: process.env.MONGODB_HOST,
+      port: parseInt(process.env.MONGODB_PORT, 10),
+      url: process.env.MONGODB_URL,
+      database: process.env.MONGODB_DB,
     },
   };
 }

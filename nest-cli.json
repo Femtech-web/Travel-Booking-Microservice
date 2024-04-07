@@ -53,7 +53,12 @@
       "sourceRoot": "apps/mailer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/mailer/tsconfig.app.json",
-        "assets": [{ "include": "**/templates/**/*", "outDir": "dist/apps/mailer" }],
+        "assets": [
+          {
+            "include": "**/templates/**/*",
+            "outDir": "dist/apps/mailer"
+          }
+        ],
         "watchAssets": true
       }
     },
@@ -64,6 +69,15 @@
       "sourceRoot": "apps/token/src",
       "compilerOptions": {
         "tsConfigPath": "apps/token/tsconfig.app.json"
+      }
+    },
+    "booking-service": {
+      "type": "application",
+      "root": "apps/booking-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/booking-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/booking-service/tsconfig.app.json"
       }
     }
   }

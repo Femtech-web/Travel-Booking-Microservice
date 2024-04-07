@@ -39,6 +39,11 @@ export * from './dtos/users/change-email.dto';
 export * from './dtos/users/get-user-params.dto';
 export * from './dtos/users/password.dto';
 export * from './dtos/users/update-user.dto';
+// dto - booking
+export * from './dtos/booking/get-booking.dto';
+export * from './dtos/booking/create-booking.dto';
+export * from './dtos/booking/update-booking.dto';
+export * from './dtos/booking/delete-booking.dto';
 // dtos - others
 export * from './dtos/pagination-query.dto';
 // entities
@@ -54,11 +59,12 @@ export * from './interfaces/auth/origin.interface';
 export * from './interfaces/user/user.repository.interface';
 export * from './interfaces/user/user.interface';
 export * from './interfaces/user/response-user.interface';
+// interfaces - configs
+export * from './interfaces/configs/jwt.interface';
+export * from './interfaces/configs/config.interface';
+export * from './interfaces/configs/queues.interface';
+export * from './interfaces/configs/email-config.interface';
 // interfaces - others
-export * from './interfaces/jwt.interface';
-export * from './interfaces/config.interface';
-export * from './interfaces/queues.interface';
-export * from './interfaces/email-config.interface';
 export * from './interfaces/message.interface';
 export * from './interfaces/credentials.interface';
 export * from './interfaces/custom-request.interface';

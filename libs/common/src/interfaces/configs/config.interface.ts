@@ -2,6 +2,7 @@ import { RedisOptions } from 'ioredis';
 import { IEmailConfig } from './email-config.interface';
 import { IJwt } from './jwt.interface';
 import { IQueues } from './queues.interface';
+import { IMongoDB } from './mongodb-config.interface';
 
 export interface IConfig {
   id: string;
@@ -15,4 +16,5 @@ export interface IConfig {
   jwt: IJwt;
   rabbitmq_url: string;
   emailService: IEmailConfig;
+  mongodb_config: IMongoDB;
 }
