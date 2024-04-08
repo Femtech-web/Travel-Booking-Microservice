@@ -3,4 +3,7 @@ export interface IQueues {
   tokenQueue: string;
   mailerQueue: string;
   userQueue: string;
+  paymentQueue: string;
+  bookingQueue: string;
+  reservationQueue: string;
 }

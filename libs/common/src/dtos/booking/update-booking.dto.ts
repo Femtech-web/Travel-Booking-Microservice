@@ -1,6 +1,6 @@
 import { CreateBookingDto } from './create-booking.dto';
 
 export class UpdateBookingDto {
-  id: number;
+  id: string;
   updatedBooking: CreateBookingDto;
 }

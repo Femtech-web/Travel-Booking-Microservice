@@ -1,3 +1,3 @@
 export class DeleteBookingDto {
-  id: number;
+  id: string;
 }

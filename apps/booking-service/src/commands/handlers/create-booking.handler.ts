@@ -19,7 +19,7 @@ export class CreateBookingHandler
     const booking = await this.bookingRepository.create();
 
     booking.customer_id = customer_id;
-    booking.date = new Date();
+    booking.createdAt = new Date();
 
     try {
       await booking.save();

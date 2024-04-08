@@ -14,6 +14,7 @@ export * from './mappers/message.mapper';
 export * from './utils/validation.utils';
 // const
 export * from './consts/regex.const';
+export * from './consts/payment-currencies.const';
 // repositories
 export * from './repositories/base/base.abstract.repository';
 export * from './repositories/base/base.interface.repository';
@@ -44,6 +45,10 @@ export * from './dtos/booking/get-booking.dto';
 export * from './dtos/booking/create-booking.dto';
 export * from './dtos/booking/update-booking.dto';
 export * from './dtos/booking/delete-booking.dto';
+// dto - payment
+export * from './dtos/payment/create-payment.dto';
+export * from './dtos/payment/get-payment.dto';
+export * from './dtos/payment/update-payment.dto';
 // dtos - others
 export * from './dtos/pagination-query.dto';
 // entities
@@ -58,14 +63,15 @@ export * from './interfaces/auth/origin.interface';
 // interfaces - user
 export * from './interfaces/user/user.repository.interface';
 export * from './interfaces/user/user.interface';
+export * from './interfaces/user/credentials.interface';
 export * from './interfaces/user/response-user.interface';
 // interfaces - configs
 export * from './interfaces/configs/jwt.interface';
 export * from './interfaces/configs/config.interface';
 export * from './interfaces/configs/queues.interface';
 export * from './interfaces/configs/email-config.interface';
+export * from './interfaces/configs/client-pattern.interface';
 // interfaces - others
 export * from './interfaces/message.interface';
-export * from './interfaces/credentials.interface';
 export * from './interfaces/custom-request.interface';
 export * from './interfaces/pagination-query.interface';

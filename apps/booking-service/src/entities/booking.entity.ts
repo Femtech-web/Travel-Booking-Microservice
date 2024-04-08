@@ -3,10 +3,10 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity()
 export class BookingEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
-  customer_id: number;
+  customer_id: string;
 
   @Column()
   public createdAt: Date;

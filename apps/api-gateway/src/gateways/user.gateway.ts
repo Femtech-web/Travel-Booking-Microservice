@@ -61,7 +61,7 @@ export class UserGateway {
     );
   }
 
-  @Patch()
+  @Patch('/')
   public async UpdateUser(
     @CurrentUser() id: string,
     @Body() dto: UpdateUserDto,
@@ -89,7 +89,7 @@ export class UserGateway {
     );
   }
 
-  @Delete()
+  @Delete('/')
   public async DeleteUser(
     @CurrentUser() id: string,
     @Body() dto: PasswordDto,

@@ -20,7 +20,7 @@ export class UpdateBookingHandler
     try {
       await this.bookingRepository.update({ id }, { customer_id });
 
-      const booking = await this.bookingRepository.findOne(id);
+      const booking = await this.bookingRepository.findOne({ where: { id } });
       return booking;
     } catch (error) {
       throw new InternalServerErrorException(error);

@@ -27,6 +27,9 @@ export function config(): IConfig {
       tokenQueue: process.env.RABBITMQ_TOKEN_QUEUE,
       mailerQueue: process.env.RABBITMQ_MAILER_QUEUE,
       userQueue: process.env.RABBITMQ_USER_QUEUE,
+      paymentQueue: process.env.RABBITMQ_PAYMENT_QUEUE,
+      bookingQueue: process.env.RABBITMQ_BOOKING_QUEUE,
+      reservationQueue: process.env.RABBITMQ_RESERVATION_QUEUE,
     },
     jwt: {
       access: {

@@ -1,3 +1,3 @@
 export class GetBookingDto {
-  id: number;
+  id: string;
 }

@@ -15,14 +15,14 @@ export class DeleteBookingHandler
   ) {}
 
   async execute(command: DeleteBookingCommand) {
-    const id = command.deleteBookingDto;
+    const { id } = command.deleteBookingDto;
 
     try {
-      const customer = await this.bookingRepository.findOne(id);
+      const customer = await this.bookingRepository.findOne({ where: { id } });
       await this.bookingRepository.remove(customer);
     } catch (error) {
       throw new InternalServerErrorException(
-        `Problem occured when removing a booking: ${error}`,
+        `Problem occurred when removing a booking: ${error}`,
       );
     }
 

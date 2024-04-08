@@ -22,7 +22,7 @@ import {
 import { UserService } from './user.service';
 import { CommonService } from '@app/common';
 
-@Controller()
+@Controller('users')
 export class UserController {
   private cookiePath = '/api/auth';
   private cookieName: string;
