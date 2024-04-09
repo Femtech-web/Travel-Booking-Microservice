@@ -53,7 +53,7 @@ export class PaymentGateway {
     return await this.commonService.sendEvent(
       this.paymentService,
       { cmd: 'update-payment' },
-      { ...updatedPayment },
+      { updatedPayment, id },
     );
   }
 }

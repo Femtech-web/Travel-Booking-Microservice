@@ -21,17 +21,29 @@ import {
   ConfirmEmailDto,
   ResetPasswordDto,
   ChangePasswordDto,
+  AuthResponseMapper,
   EmailDto,
 } from '@app/common';
 import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('api/auth')
 export class AuthGateway {
+  private readonly cookiePath = '/api/auth';
+  private readonly cookieName: string = '';
+  private readonly testing: boolean;
+  private readonly refreshTime: number;
+
   constructor(
     @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
     private readonly commonService: CommonService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.cookieName = this.configService.get<string>('refresh_cookie');
+    this.refreshTime = this.configService.get<number>('jwt.refresh.time');
+    this.testing = this.configService.get<boolean>('testing');
+  }
 
   @Public()
   @Post('/sign-up')
@@ -51,17 +63,23 @@ export class AuthGateway {
   @Public()
   @Post('/sign-in')
   public async SignIn(
-    @Res() response: Response,
+    @Res() res: Response,
     @Body() signInDto: SignInDto,
-    @Origin() origin: string,
+    @Origin() origin: string | undefined,
   ): Promise<void> {
     const signInOptions = signInDto;
+    console.log(signInOptions);
+    console.log(origin);
 
-    return await this.commonService.sendEvent(
+    const result = await this.commonService.sendEvent(
       this.authService,
       { cmd: 'sign-in' },
-      { signInOptions, origin, response },
+      { signInOptions, origin },
     );
+
+    this.saveRefreshCookie(res, result.refreshToken)
+      .status(HttpStatus.OK)
+      .send(AuthResponseMapper.map(result));
   }
 
   @Public()
@@ -69,12 +87,19 @@ export class AuthGateway {
   public async RefreshAccess(
     @Req() req: ICustomRequest,
     @Res() res: Response,
+    @Origin() origin: string,
   ): Promise<void> {
-    return await this.commonService.sendEvent(
+    const token = await this.getCookieFromRequest(req);
+
+    const result = await this.commonService.sendEvent(
       this.authService,
       { cmd: 'refresh-access' },
-      { req, res },
+      { token, origin },
     );
+
+    this.saveRefreshCookie(res, result.refreshToken)
+      .status(HttpStatus.OK)
+      .send(AuthResponseMapper.map(result));
   }
 
   @Post('/logout')
@@ -82,27 +107,39 @@ export class AuthGateway {
     @Req() req: ICustomRequest,
     @Res() res: Response,
   ): Promise<void> {
-    return await this.commonService.sendEvent(
+    const token = await this.getCookieFromRequest(req);
+
+    const message = await this.commonService.sendEvent(
       this.authService,
       { cmd: 'logout' },
-      { req, res },
+      { token, res },
     );
+
+    res
+      .clearCookie(this.cookieName, { path: this.cookiePath })
+      .header('Content-Type', 'application/json')
+      .status(HttpStatus.OK)
+      .send(message);
   }
 
   @Public()
   @Post('/confirm-email')
   public async ConfirmEmail(
-    @Res() response: Response,
+    @Res() res: Response,
     @Body() confirmEmailDto: ConfirmEmailDto,
     @Origin() origin: string,
   ): Promise<void> {
     const confirmEmailOptions = confirmEmailDto;
 
-    return await this.commonService.sendEvent(
+    const result = await this.commonService.sendEvent(
       this.authService,
       { cmd: 'confirm-email' },
-      { confirmEmailOptions, origin, response },
+      { confirmEmailOptions, origin },
     );
+
+    this.saveRefreshCookie(res, result.refreshToken)
+      .status(HttpStatus.OK)
+      .send(AuthResponseMapper.map(result));
   }
 
   @Public()
@@ -142,10 +179,33 @@ export class AuthGateway {
   ): Promise<void> {
     const resetPasswordOptions = changePasswordDto;
 
-    return await this.commonService.sendEvent(
+    const result = await this.commonService.sendEvent(
       this.authService,
       { cmd: 'update-password' },
-      { resetPasswordOptions, origin, res, userId },
+      { resetPasswordOptions, origin, userId },
     );
+
+    this.saveRefreshCookie(res, result.refreshToken)
+      .status(HttpStatus.OK)
+      .send(AuthResponseMapper.map(result));
+  }
+
+  private async getCookieFromRequest(req: ICustomRequest): Promise<string> {
+    const tokenKey: string | undefined = req.cookies[this.cookieName];
+    const token: string | undefined = req.signedCookies[tokenKey];
+
+    return token;
+  }
+
+  private saveRefreshCookie(res: Response, refreshToken: string): Response {
+    return res
+      .cookie(this.cookieName, refreshToken, {
+        secure: !this.testing,
+        httpOnly: true,
+        signed: true,
+        path: this.cookiePath,
+        expires: new Date(Date.now() + this.refreshTime * 1000),
+      })
+      .header('Content-Type', 'application/json');
   }
 }

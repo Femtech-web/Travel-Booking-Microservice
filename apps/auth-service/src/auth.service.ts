@@ -54,7 +54,8 @@ export class AuthService {
       { user, tokenType, domain },
     );
 
-    this.mailerService.send(
+    await this.commonService.sendEvent(
+      this.mailerService,
       { cmd: 'send-confirmation-email' },
       { user, confirmationToken },
     );
@@ -104,10 +105,13 @@ export class AuthService {
         { cmd: 'generate-token' },
         { user, tokenType, domain },
       );
-      this.mailerService.send(
+
+      await this.commonService.sendEvent(
+        this.mailerService,
         { cmd: 'send-confirmation-email' },
         { user, confirmationToken },
       );
+
       throw new UnauthorizedException(
         'Please confirm your email, a new email has been sent',
       );
@@ -177,7 +181,8 @@ export class AuthService {
         { user, tokenType, domain },
       );
 
-      this.mailerService.send(
+      await this.commonService.sendEvent(
+        this.mailerService,
         { cmd: 'send-passwordReset-email' },
         { user, resetToken },
       );

@@ -16,10 +16,10 @@ export class PaymentModel {
   @IsNumber()
   amount: number;
 
-  @@IsString()
+  @IsString()
   currency: string;
 
-  @@IsString()
+  @IsString()
   stripe_id: string;
 
   @IsString()

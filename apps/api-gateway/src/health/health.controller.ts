@@ -24,12 +24,6 @@ export class HealthController {
     return this.healthService.checkDB();
   }
 
-  @Get('/check-disk')
-  @HealthCheck()
-  checkDisk() {
-    return this.healthService.checkDisk();
-  }
-
   @Get('/check-memory')
   @HealthCheck()
   checkMemory() {

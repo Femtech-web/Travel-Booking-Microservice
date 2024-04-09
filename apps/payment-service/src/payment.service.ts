@@ -50,6 +50,19 @@ export class PaymentService {
   async updatePayment(
     updatePaymentDto: UpdatePaymentDto,
   ): Promise<PaymentEntity> {
+    const { updatedPayment } = updatePaymentDto;
+    const { newPayment } = updatedPayment;
+    const { booking_id } = newPayment;
+
+    const booking = await this.commonService.sendEvent(
+      this.bookingService,
+      { cmd: 'get-booking' },
+      { id: booking_id },
+    );
+
+    if (!booking) {
+      throw new NotFoundException('Booking does not exist');
+    }
     return this.commandBus.execute(new UpdatePaymentCommand(updatePaymentDto));
   }
 }

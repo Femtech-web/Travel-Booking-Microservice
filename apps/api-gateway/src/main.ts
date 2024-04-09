@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -13,6 +13,7 @@ import { ErrorFilter } from './filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApiGatewayModule);
+  const httpAdapterHost = app.get(HttpAdapterHost);
   const configService = app.get(ConfigService);
   const cookieSecret = configService.get<string>('cookie_secret');
   app.enableCors();
@@ -26,8 +27,8 @@ async function bootstrap() {
     }),
   );
   app.useGlobalInterceptors(new TimeoutInterceptor());
-  app.useGlobalFilters(new ErrorFilter());
+  app.useGlobalFilters(new ErrorFilter(httpAdapterHost));
 
-  await app.listen(8000);
+  await app.listen(9000);
 }
 bootstrap();

@@ -1,9 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  NotFoundException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 
 import { PaymentEntity } from '../../entities/payment.entity';
@@ -20,11 +17,8 @@ export class UpdatePaymentHandler
 
   async execute(command: UpdatePaymentCommand) {
     const { id, updatedPayment } = command.updatePaymentDto;
-    const { newPayment, booking } = updatedPayment;
+    const { newPayment } = updatedPayment;
     const { booking_id } = newPayment;
-    if (!booking) {
-      throw new NotFoundException('Booking does not exist');
-    }
 
     try {
       await this.paymentRepository.update({ id }, { booking_id });

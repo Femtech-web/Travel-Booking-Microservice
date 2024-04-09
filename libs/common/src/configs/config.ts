@@ -57,10 +57,10 @@ export function config(): IConfig {
       service: process.env.EMAIL_SERVICE,
       auth: {
         clientId: process.env.EMAIL_CLIENT_ID,
-        clientSecret: process.env.EMAIL_PASSWORD,
+        clientSecret: process.env.EMAIL_CLIENT_SECRET,
         refreshToken: process.env.EMAIL_REFRESH_TOKEN,
         user: process.env.EMAIL_USER,
-        redirectUrl: process.env.EMAIL_REDIRECT_URL,
+        redirectUrl: process.env.EMAIL_REDIRECT_URI,
       },
     },
     mongodb_config: {

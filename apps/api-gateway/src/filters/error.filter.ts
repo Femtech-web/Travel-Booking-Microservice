@@ -5,40 +5,49 @@ import {
   ArgumentsHost,
   HttpStatus,
 } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
+import { HttpAdapterHost } from '@nestjs/core';
 
 import { validateServerError } from './helpers';
 
 /**
- * A Nest.js filter that catches errors throws appriopriate exceptions
+ * A Nest.js filter that catches errors throws appropriate exceptions
  */
+
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
-  catch(error, host: ArgumentsHost) {
-    const request = host.switchToHttp().getRequest();
-    const response = host.switchToHttp().getResponse();
-    const status =
-      error instanceof HttpException
-        ? error.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-    let statusCode;
-    let errorResponse;
+  catch(error: any, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    const request = ctx.getRequest();
 
-    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
-      const { code, message } = validateServerError();
+    let status;
+    let message;
 
-      statusCode = code;
-      errorResponse = message;
+    if (error instanceof HttpException) {
+      status = error.getStatus();
+      message = error.getResponse();
+    } else if (error instanceof RpcException) {
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = error.message;
     } else {
-      statusCode = status;
-      errorResponse = error.getResponse();
+      const { code, message: msg } = validateServerError();
+      status = code;
+      message = msg;
     }
 
-    return response.status(status).json({
-      statusCode,
-      errorResponse,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    const httpAdapter = this.httpAdapterHost.httpAdapter;
+    httpAdapter.reply(
+      response,
+      {
+        statusCode: status,
+        message,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+      },
+      status,
+    );
   }
 }

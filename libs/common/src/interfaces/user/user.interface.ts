@@ -1,4 +1,4 @@
-import { ICredentials } from '../credentials.interface';
+import { ICredentials } from './credentials.interface';
 
 export interface IUser {
   id?: string;

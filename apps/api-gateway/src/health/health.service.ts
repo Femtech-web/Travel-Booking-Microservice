@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import {
-  DiskHealthIndicator,
   HealthCheckService,
   HttpHealthIndicator,
   MemoryHealthIndicator,
@@ -17,7 +15,6 @@ export class HealthService {
     private readonly healthCheckService: HealthCheckService,
     private readonly httpHealthIndicator: HttpHealthIndicator,
     private readonly typeOrmHealthIndicator: TypeOrmHealthIndicator,
-    private readonly diskHealthIndicator: DiskHealthIndicator,
     private readonly memoryHealthIndicator: MemoryHealthIndicator,
     private readonly microserviceHealthIndicator: MicroserviceHealthIndicator,
     private readonly configService: ConfigService,
@@ -40,17 +37,6 @@ export class HealthService {
   checkDB() {
     return this.healthCheckService.check([
       () => this.typeOrmHealthIndicator.pingCheck('thrillers-database'),
-    ]);
-  }
-
-  @Cron(CronExpression.EVERY_30_MINUTES)
-  checkDisk() {
-    return this.healthCheckService.check([
-      () =>
-        this.diskHealthIndicator.checkStorage('thrillers-storage', {
-          thresholdPercent: 0.9,
-          path: '/',
-        }),
     ]);
   }
 

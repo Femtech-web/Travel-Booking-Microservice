@@ -36,7 +36,7 @@ export class UserService {
       email: formattedEmail,
       name: formattedName,
       password: await hash(password1, 10),
-      isConfirmed: false,
+      isConfirmed: true,
     });
     console.log(`returned created user ==== ${user}`);
     await this.commonService.saveEntity(user);
@@ -55,6 +55,9 @@ export class UserService {
     const formattedEmail = email.toLowerCase();
     const user = await this.usersRepository.findUnique({
       where: { email: formattedEmail },
+      include: {
+        credentials: true,
+      },
     });
     this.throwUnauthorizedException(user);
     return user;
@@ -93,6 +96,9 @@ export class UserService {
   ): Promise<UserEntity> {
     const user = await this.usersRepository.findUnique({
       where: { id },
+      include: {
+        credentials: true,
+      },
     });
     this.throwUnauthorizedException(user);
 
@@ -193,6 +199,9 @@ export class UserService {
     const updatedUser = await this.usersRepository.update({
       where: { id: userId },
       data,
+      include: {
+        credentials: true,
+      },
     });
     await this.commonService.saveEntity(updatedUser);
     return updatedUser;

@@ -20,12 +20,11 @@ export * from './repositories/base/base.abstract.repository';
 export * from './repositories/base/base.interface.repository';
 // enums
 export * from './enums/token-type.enum';
-// guards
-export * from './guards/auth.guard';
 // decorators
 export * from './decorators/public.decorator';
 export * from './decorators/current-user.decorator';
 export * from './decorators/origin.decorator';
+export * from './decorators/cookies.decorator';
 // dtos - auth
 export * from './dtos/auth/change-password.dto';
 export * from './dtos/auth/confirm-email.dto';

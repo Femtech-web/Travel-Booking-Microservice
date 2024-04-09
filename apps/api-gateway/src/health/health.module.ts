@@ -6,7 +6,7 @@ import { HealthController } from './health.controller';
 import { HealthService } from './health.service';
 
 @Module({
-  imports: [TerminusModule, ScheduleModule],
+  imports: [TerminusModule, ScheduleModule.forRoot()],
   controllers: [HealthController],
   providers: [HealthService],
 })

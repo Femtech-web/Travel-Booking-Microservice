@@ -19,6 +19,6 @@ async function bootstrap() {
   app.connectMicroservice(commonService.getRmqOptions(queue));
   app.startAllMicroservices();
 
-  await app.listen(7000);
+  await app.listen(8000);
 }
 bootstrap();

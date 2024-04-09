@@ -51,7 +51,7 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
         credentials: {
           create: {
             version: 0,
-            lastPassword: '',
+            lastPassword: data.password,
             passwordUpdatedAt: 0,
             updatedAt: 0,
           },
@@ -84,6 +84,9 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
           },
         },
       },
+      include: {
+        credentials: true,
+      },
     });
   }
 
@@ -99,6 +102,9 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
             updatedAt: Date.now(),
           },
         },
+      },
+      include: {
+        credentials: true,
       },
     });
   }

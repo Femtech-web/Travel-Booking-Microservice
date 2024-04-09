@@ -13,7 +13,7 @@ export class MailerController {
   constructor(
     private readonly mailerService: MailerService,
     private readonly commonService: CommonService,
-  ) {}
+  ) { }
 
   @MessagePattern({ cmd: 'send-confirmation-email' })
   public async sendConfirmationEmail(
@@ -21,10 +21,10 @@ export class MailerController {
     @Ctx() context: RmqContext,
   ) {
     console.log('data', data);
-    const { user, token } = data;
+    const { user, confirmationToken } = data;
     this.commonService.acknowledgeMessage(context);
 
-    this.mailerService.sendConfirmationEmail(user, token);
+    this.mailerService.sendConfirmationEmail(user, confirmationToken);
   }
 
   @MessagePattern({ cmd: 'send-passwordReset-email' })

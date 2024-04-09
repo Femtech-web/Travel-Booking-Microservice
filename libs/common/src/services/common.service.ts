@@ -16,7 +16,7 @@ import {
 import { validate, ValidationError } from 'class-validator';
 import { isNull, isUndefined } from '../utils/validation.utils';
 import { MessageMapper } from '../mappers/message.mapper';
-import { IPattern } from '../interfaces/client-pattern.interface';
+import { IPattern } from '../interfaces/configs/client-pattern.interface';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()

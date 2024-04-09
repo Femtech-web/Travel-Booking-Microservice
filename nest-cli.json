@@ -87,15 +87,6 @@
         "tsConfigPath": "apps/booking-service/tsconfig.app.json"
       }
     },
-    "reservation-service": {
-      "type": "application",
-      "root": "apps/reservation-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/reservation-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/reservation-service/tsconfig.app.json"
-      }
-    },
     "payment-service": {
       "type": "application",
       "root": "apps/payment-service",

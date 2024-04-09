@@ -14,7 +14,7 @@ import {
   CommonService,
   ICustomRequest,
 } from '@app/common';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '@app/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()

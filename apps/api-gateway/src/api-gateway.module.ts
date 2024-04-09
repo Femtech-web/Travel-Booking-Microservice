@@ -15,6 +15,10 @@ import {
 @Module({
   imports: [
     CommonModule.registerRmq('TOKEN_SERVICE', process.env.RABBITMQ_TOKEN_QUEUE),
+    CommonModule.registerRmq(
+      'MAILER_SERVICE',
+      process.env.RABBITMQ_MAILER_QUEUE,
+    ),
     AuthGatewayModule,
     UserGatewayModule,
     BookingGatewayModule,

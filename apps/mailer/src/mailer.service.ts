@@ -1,15 +1,13 @@
-/* eslint-disable prettier/prettier */
 import { Injectable, LoggerService, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { google } from 'googleapis';
 import { readFileSync } from 'fs';
 import Handlebars from 'handlebars';
 import { join } from 'path';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { IEmailConfig, IUser } from '@app/common';
 import { ITemplatedData } from './interfaces/template-data.interface';
 import { ITemplates } from './interfaces/templates.interface';
-import { createTransport, Transporter } from 'nodemailer';
+import nodemailer from 'nodemailer';
 
 @Injectable()
 export class MailerService {
@@ -28,6 +26,7 @@ export class MailerService {
 
   constructor(private readonly configService: ConfigService) {
     const emailConfig = this.configService.get<IEmailConfig>('emailService');
+    console.log(emailConfig)
     this.email = `"My App" <${emailConfig.auth.user}>`;
     this.domain = this.configService.get<string>('domain');
     this.host = emailConfig.host;
@@ -79,20 +78,20 @@ export class MailerService {
       });
 
       // create a new transporter with the necessary details of your Oauth2
-      const transporter: Transporter<SMTPTransport.SentMessageInfo> =
-        createTransport({
-          host: this.host,
-          port: this.port,
-          secure: true,
-          auth: {
-            type: 'OAuth2',
-            user: this.userEmail,
-            accessToken,
-            clientId: this.clientId,
-            clientSecret: this.clientSecret,
-            refreshToken: this.refreshToken,
-          },
-        });
+      const transporter = await nodemailer.createTransport({
+        service: this.service,
+        host: this.host,
+        port: this.port,
+        secure: true,
+        auth: {
+          type: 'OAuth2',
+          user: this.userEmail,
+          accessToken,
+          clientId: this.clientId,
+          clientSecret: this.clientSecret,
+          refreshToken: this.refreshToken,
+        },
+      });
 
       // To verify if email transport was successful
       transporter.verify((err: any, success: any) => {
@@ -106,15 +105,16 @@ export class MailerService {
       return transporter;
     } catch (err) {
       console.log('------------------------------------------------');
-      // console.log(
-      //   this.userEmail,
-      //   this.clientId,
-      //   this.clientSecret,
-      //   this.refreshToken,
-      //   this.redirectUrl
-      // );
+      console.log(
+        this.userEmail,
+        this.clientId,
+        this.clientSecret,
+        this.refreshToken,
+        this.redirectUrl
+      );
       console.log('------------------------------------------------');
-      console.log(err);
+      console.log('Error creating transporter:', err);
+      throw new Error('Failed to create transporter');
     }
   }
 
@@ -150,6 +150,7 @@ export class MailerService {
     log?: string,
   ): Promise<void> {
     const transporter = await this.createTransporter();
+    console.log(transporter)
     transporter
       .sendMail({
         from: this.email,
