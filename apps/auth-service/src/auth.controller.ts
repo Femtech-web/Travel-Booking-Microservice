@@ -46,7 +46,6 @@ export class AuthController {
     @Ctx() context: RmqContext,
   ): Promise<IAuthResult> {
     this.commonService.acknowledgeMessage(context);
-    console.log(origin);
 
     return await this.authService.signIn(signInDto, origin);
   }

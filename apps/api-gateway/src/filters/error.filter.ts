@@ -26,6 +26,7 @@ export class ErrorFilter implements ExceptionFilter {
     let status;
     let message;
 
+    console.log(error);
     if (error instanceof HttpException) {
       status = error.getStatus();
       message = error.getResponse();

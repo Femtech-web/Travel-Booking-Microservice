@@ -74,3 +74,4 @@ export * from './interfaces/configs/client-pattern.interface';
 export * from './interfaces/message.interface';
 export * from './interfaces/custom-request.interface';
 export * from './interfaces/pagination-query.interface';
+export * from './interfaces/mailer-response.interface';

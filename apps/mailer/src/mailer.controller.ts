@@ -13,18 +13,20 @@ export class MailerController {
   constructor(
     private readonly mailerService: MailerService,
     private readonly commonService: CommonService,
-  ) { }
+  ) {}
 
   @MessagePattern({ cmd: 'send-confirmation-email' })
   public async sendConfirmationEmail(
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
-    console.log('data', data);
     const { user, confirmationToken } = data;
     this.commonService.acknowledgeMessage(context);
 
-    this.mailerService.sendConfirmationEmail(user, confirmationToken);
+    return await this.mailerService.sendConfirmationEmail(
+      user,
+      confirmationToken,
+    );
   }
 
   @MessagePattern({ cmd: 'send-passwordReset-email' })
@@ -32,10 +34,9 @@ export class MailerController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
-    console.log('data', data);
-    const { user, token } = data;
+    const { user, resetToken } = data;
     this.commonService.acknowledgeMessage(context);
 
-    this.mailerService.sendResetPasswordEmail(user, token);
+    return await this.mailerService.sendResetPasswordEmail(user, resetToken);
   }
 }

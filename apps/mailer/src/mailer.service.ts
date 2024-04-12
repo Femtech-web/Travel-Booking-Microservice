@@ -4,10 +4,10 @@ import { google } from 'googleapis';
 import { readFileSync } from 'fs';
 import Handlebars from 'handlebars';
 import { join } from 'path';
-import { IEmailConfig, IUser } from '@app/common';
+import { IEmailConfig, IUser, successResponse } from '@app/common';
 import { ITemplatedData } from './interfaces/template-data.interface';
 import { ITemplates } from './interfaces/templates.interface';
-import nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class MailerService {
@@ -26,7 +26,6 @@ export class MailerService {
 
   constructor(private readonly configService: ConfigService) {
     const emailConfig = this.configService.get<IEmailConfig>('emailService');
-    console.log(emailConfig)
     this.email = `"My App" <${emailConfig.auth.user}>`;
     this.domain = this.configService.get<string>('domain');
     this.host = emailConfig.host;
@@ -78,8 +77,7 @@ export class MailerService {
       });
 
       // create a new transporter with the necessary details of your Oauth2
-      const transporter = await nodemailer.createTransport({
-        service: this.service,
+      const transporter = nodemailer.createTransport({
         host: this.host,
         port: this.port,
         secure: true,
@@ -104,43 +102,48 @@ export class MailerService {
 
       return transporter;
     } catch (err) {
-      console.log('------------------------------------------------');
-      console.log(
-        this.userEmail,
-        this.clientId,
-        this.clientSecret,
-        this.refreshToken,
-        this.redirectUrl
-      );
-      console.log('------------------------------------------------');
-      console.log('Error creating transporter:', err);
-      throw new Error('Failed to create transporter');
+      console.log(err);
     }
   }
 
-  public sendConfirmationEmail(user: IUser, token: string): void {
+  public async sendConfirmationEmail(
+    user: IUser,
+    token: string,
+  ): Promise<successResponse> {
     const { email, name } = user;
     const subject = 'Confirm your email';
     const html = this.templates.confirmation({
       name,
       link: `https://${this.domain}/auth/confirm-email/${token}`,
     });
-    this.sendEmail(email, subject, html, 'A new confirmation email was sent.');
+    await this.sendEmail(
+      email,
+      subject,
+      html,
+      'A new confirmation email was sent.',
+    );
+
+    return { response: 'confirmation email sent successfully' };
   }
 
-  public sendResetPasswordEmail(user: IUser, token: string): void {
+  public async sendResetPasswordEmail(
+    user: IUser,
+    token: string,
+  ): Promise<successResponse> {
     const { email, name } = user;
     const subject = 'Reset your password';
     const html = this.templates.resetPassword({
       name,
       link: `https://${this.domain}/auth/reset-password/${token}`,
     });
-    this.sendEmail(
+    await this.sendEmail(
       email,
       subject,
       html,
       'A new reset password email was sent.',
     );
+
+    return { response: 'password reset email sent successfully' };
   }
 
   public async sendEmail(
@@ -150,7 +153,6 @@ export class MailerService {
     log?: string,
   ): Promise<void> {
     const transporter = await this.createTransporter();
-    console.log(transporter)
     transporter
       .sendMail({
         from: this.email,

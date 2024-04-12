@@ -20,7 +20,6 @@ export class TokenController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
-    console.log('data', data);
     const { user, domain, tokenId } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -29,7 +28,6 @@ export class TokenController {
 
   @MessagePattern({ cmd: 'generate-token' })
   public async generateToken(@Payload() data: any, @Ctx() context: RmqContext) {
-    console.log('data', data);
     const { user, tokenType, domain, tokenId } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -38,7 +36,6 @@ export class TokenController {
 
   @MessagePattern({ cmd: 'verify-token' })
   public async verifyToken(@Payload() data: any, @Ctx() context: RmqContext) {
-    console.log('data', data);
     const { token, tokenType } = data;
     this.commonService.acknowledgeMessage(context);
 

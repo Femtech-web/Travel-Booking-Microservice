@@ -75,7 +75,7 @@ export class TokenService {
         throw new BadRequestException('Token expired');
       }
       if (error instanceof jwt.JsonWebTokenError) {
-        throw new BadRequestException('Invalid token');
+        throw new BadRequestException('Invalid token' + error);
       }
       throw new InternalServerErrorException(error);
     }
@@ -174,7 +174,7 @@ export class TokenService {
     domain?: string,
     tokenId?: string,
   ): Promise<[string, string]> {
-    return Promise.all([
+    return await Promise.all([
       this.generateToken(user, TokenTypeEnum.ACCESS, domain, tokenId),
       this.generateToken(user, TokenTypeEnum.REFRESH, domain, tokenId),
     ]);

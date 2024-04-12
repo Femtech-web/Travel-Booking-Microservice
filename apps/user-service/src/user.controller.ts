@@ -37,7 +37,6 @@ export class UserController {
 
   @MessagePattern({ cmd: 'create-user' })
   public async Create(@Payload() data: any, @Ctx() context: RmqContext) {
-    console.log('data', data);
     const { email, name, password1 } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -46,7 +45,6 @@ export class UserController {
 
   @MessagePattern({ cmd: 'find-by-email' })
   public async findByEmail(@Payload() data: any, @Ctx() context: RmqContext) {
-    console.log('data', data);
     const { email } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -58,7 +56,6 @@ export class UserController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
-    console.log('data', data);
     const { id, version } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -67,7 +64,6 @@ export class UserController {
 
   @MessagePattern({ cmd: 'confirm-email' })
   public async confirmEmail(@Payload() data: any, @Ctx() context: RmqContext) {
-    console.log('data', data);
     const { userId, version } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -76,7 +72,6 @@ export class UserController {
 
   @MessagePattern({ cmd: 'reset-password' })
   public async resetPassword(@Payload() data: any, @Ctx() context: RmqContext) {
-    console.log('data', data);
     const { userId, version, password } = data;
     this.commonService.acknowledgeMessage(context);
 
@@ -88,7 +83,6 @@ export class UserController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
-    console.log('data', data);
     const { userId, version, password } = data;
     this.commonService.acknowledgeMessage(context);
 

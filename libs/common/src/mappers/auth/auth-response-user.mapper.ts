@@ -17,8 +17,8 @@ export class AuthResponseUserMapper implements IAuthResponseUser {
       id: user.id,
       name: user.name,
       email: user.email,
-      createdAt: user.createdAt.toISOString(),
-      updatedAt: user.updatedAt.toISOString(),
+      createdAt: user.createdAt.toString(),
+      updatedAt: user.updatedAt.toString(),
     });
   }
 }

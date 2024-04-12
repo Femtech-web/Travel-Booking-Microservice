@@ -54,11 +54,12 @@ export class AuthService {
       { user, tokenType, domain },
     );
 
-    await this.commonService.sendEvent(
+    this.commonService.sendEvent(
       this.mailerService,
       { cmd: 'send-confirmation-email' },
       { user, confirmationToken },
     );
+
     return this.commonService.generateMessage('Registration successful');
   }
 
@@ -72,14 +73,14 @@ export class AuthService {
     const verifiedToken = await this.commonService.sendEvent(
       this.tokenService,
       { cmd: 'verify-token' },
-      { confirmationToken, tokenType },
+      { token: confirmationToken, tokenType },
     );
     const { id, version } = verifiedToken;
 
     const user = await this.commonService.sendEvent(
       this.userService,
       { cmd: 'confirm-email' },
-      { id, version },
+      { userId: id, version },
     );
 
     const [accessToken, refreshToken] = await this.commonService.sendEvent(
@@ -106,7 +107,7 @@ export class AuthService {
         { user, tokenType, domain },
       );
 
-      await this.commonService.sendEvent(
+      this.commonService.sendEvent(
         this.mailerService,
         { cmd: 'send-confirmation-email' },
         { user, confirmationToken },
@@ -134,7 +135,7 @@ export class AuthService {
     const verifiedToken = await this.commonService.sendEvent(
       this.tokenService,
       { cmd: 'verify-token' },
-      { refreshToken, tokenType },
+      { token: refreshToken, tokenType },
     );
     const { id, version, tokenId } = verifiedToken;
 
@@ -159,7 +160,7 @@ export class AuthService {
     const verifiedToken = await this.commonService.sendEvent(
       this.tokenService,
       { cmd: 'verify-token' },
-      { refreshToken, tokenType },
+      { token: refreshToken, tokenType },
     );
     const { id, tokenId, exp } = verifiedToken;
 
@@ -181,7 +182,7 @@ export class AuthService {
         { user, tokenType, domain },
       );
 
-      await this.commonService.sendEvent(
+      this.commonService.sendEvent(
         this.mailerService,
         { cmd: 'send-passwordReset-email' },
         { user, resetToken },
@@ -197,7 +198,7 @@ export class AuthService {
     const verifiedToken = await this.commonService.sendEvent(
       this.tokenService,
       { cmd: 'verify-token' },
-      { resetToken, tokenType },
+      { token: resetToken, tokenType },
     );
     const { id, version } = verifiedToken;
 

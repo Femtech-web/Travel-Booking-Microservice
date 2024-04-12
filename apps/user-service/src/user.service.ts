@@ -31,14 +31,15 @@ export class UserService {
   ): Promise<UserEntity> {
     const formattedEmail = email.toLowerCase();
     await this.checkEmailUniqueness(formattedEmail);
+
     const formattedName = this.commonService.formatName(name);
     const user = await this.usersRepository.createUser({
       email: formattedEmail,
       name: formattedName,
       password: await hash(password1, 10),
-      isConfirmed: true,
+      isConfirmed: false,
     });
-    console.log(`returned created user ==== ${user}`);
+
     await this.commonService.saveEntity(user);
     return user;
   }
@@ -124,6 +125,9 @@ export class UserService {
     const updatedUser = await this.usersRepository.update({
       where: { id: userId },
       data,
+      include: {
+        credentials: true,
+      },
     });
 
     await this.commonService.saveEntity(updatedUser);

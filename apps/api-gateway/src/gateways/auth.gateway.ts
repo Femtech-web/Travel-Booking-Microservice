@@ -77,9 +77,8 @@ export class AuthGateway {
       { signInOptions, origin },
     );
 
-    this.saveRefreshCookie(res, result.refreshToken)
-      .status(HttpStatus.OK)
-      .send(AuthResponseMapper.map(result));
+    this.saveRefreshCookie(res, result.refreshToken);
+    res.status(HttpStatus.OK).json(AuthResponseMapper.map(result));
   }
 
   @Public()
@@ -97,9 +96,8 @@ export class AuthGateway {
       { token, origin },
     );
 
-    this.saveRefreshCookie(res, result.refreshToken)
-      .status(HttpStatus.OK)
-      .send(AuthResponseMapper.map(result));
+    this.saveRefreshCookie(res, result.refreshToken);
+    res.status(HttpStatus.OK).send(AuthResponseMapper.map(result));
   }
 
   @Post('/logout')
@@ -137,9 +135,8 @@ export class AuthGateway {
       { confirmEmailOptions, origin },
     );
 
-    this.saveRefreshCookie(res, result.refreshToken)
-      .status(HttpStatus.OK)
-      .send(AuthResponseMapper.map(result));
+    this.saveRefreshCookie(res, result.refreshToken);
+    res.status(HttpStatus.OK).send(AuthResponseMapper.map(result));
   }
 
   @Public()
@@ -185,9 +182,8 @@ export class AuthGateway {
       { resetPasswordOptions, origin, userId },
     );
 
-    this.saveRefreshCookie(res, result.refreshToken)
-      .status(HttpStatus.OK)
-      .send(AuthResponseMapper.map(result));
+    this.saveRefreshCookie(res, result.refreshToken);
+    res.status(HttpStatus.OK).send(AuthResponseMapper.map(result));
   }
 
   private async getCookieFromRequest(req: ICustomRequest): Promise<string> {
@@ -197,8 +193,8 @@ export class AuthGateway {
     return token;
   }
 
-  private saveRefreshCookie(res: Response, refreshToken: string): Response {
-    return res
+  private saveRefreshCookie(res: Response, refreshToken: string): void {
+    res
       .cookie(this.cookieName, refreshToken, {
         secure: !this.testing,
         httpOnly: true,

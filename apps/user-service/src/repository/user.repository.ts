@@ -52,8 +52,6 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
           create: {
             version: 0,
             lastPassword: data.password,
-            passwordUpdatedAt: 0,
-            updatedAt: 0,
           },
         },
       },
@@ -79,8 +77,6 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
               increment: 1,
             },
             lastPassword: oldPassword,
-            passwordUpdatedAt: Date.now(),
-            updatedAt: Date.now(),
           },
         },
       },
@@ -90,8 +86,8 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
     });
   }
 
-  public async updateVersion(id: string): Promise<userModel> {
-    return await this.update({
+  public async updateVersion(id: string) {
+    await this.update({
       where: { id },
       data: {
         credentials: {
@@ -99,7 +95,6 @@ export class UserRepository extends BaseInterfaceRepository<'user'> {
             version: {
               increment: 1,
             },
-            updatedAt: Date.now(),
           },
         },
       },

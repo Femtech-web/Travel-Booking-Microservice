@@ -28,8 +28,8 @@ model Credentials {
   id String @default(uuid()) @id
   version Int @default(0)
   lastPassword String @default("")
-  passwordUpdatedAt Int @default(0)
-  updatedAt Int @default(0)
+  passwordUpdatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
   userId  String @unique
   owner User  @relation(fields: [userId], references: [id])
 }
