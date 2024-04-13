@@ -24,7 +24,6 @@ export * from './enums/token-type.enum';
 export * from './decorators/public.decorator';
 export * from './decorators/current-user.decorator';
 export * from './decorators/origin.decorator';
-export * from './decorators/cookies.decorator';
 // dtos - auth
 export * from './dtos/auth/change-password.dto';
 export * from './dtos/auth/confirm-email.dto';
