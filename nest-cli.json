@@ -46,7 +46,7 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json",
         "assets": [
           {
-            "include": "**/keys/**/*",
+            "include": "keys/**/*",
             "outDir": "dist"
           }
         ],
