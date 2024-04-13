@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export class GetBookingDto {
-  id: string;
+  id: ObjectId;
 }

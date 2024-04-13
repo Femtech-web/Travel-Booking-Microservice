@@ -47,6 +47,7 @@ export class ErrorFilter implements ExceptionFilter {
         message,
         timestamp: new Date().toISOString(),
         path: request.url,
+        error,
       },
       status,
     );

@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ObjectId } from 'mongodb';
 import { InternalServerErrorException } from '@nestjs/common';
 import { DeleteBookingCommand } from '../impl/delete-booking.command';
 import { BookingEntity } from '../../entities/booking.entity';
@@ -18,8 +19,11 @@ export class DeleteBookingHandler
     const { id } = command.deleteBookingDto;
 
     try {
-      const customer = await this.bookingRepository.findOne({ where: { id } });
-      await this.bookingRepository.remove(customer);
+      const booking = await this.bookingRepository.findOne({
+        where: { _id: new ObjectId(id) },
+      });
+      await this.bookingRepository.remove(booking);
+      return { response: 'booking deleted successfully' };
     } catch (error) {
       throw new InternalServerErrorException(
         `Problem occurred when removing a booking: ${error}`,

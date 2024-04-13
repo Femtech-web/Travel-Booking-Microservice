@@ -6,4 +6,7 @@ export abstract class ChangeEmailDto extends PasswordDto {
   @IsEmail()
   @Length(5, 255)
   public email: string;
+  @IsString()
+  @Length(1, 255)
+  public password: string;
 }

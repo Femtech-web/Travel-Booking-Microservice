@@ -142,12 +142,17 @@ export class UserService {
       if (name === user.name) {
         throw new BadRequestException('Name must be different');
       }
-
-      user.name = this.commonService.formatName(name);
     }
+    const formattedName = this.commonService.formatName(name);
 
     await this.commonService.saveEntity(user);
-    return user;
+    const data = { name: formattedName };
+    const updatedUser = await this.usersRepository.update({
+      where: { id: userId },
+      data,
+    });
+
+    return updatedUser;
   }
 
   public async updatePassword(

@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { ObjectId } from 'mongodb';
 
 import { PaymentEntity } from '../../entities/payment.entity';
 import { UpdatePaymentCommand } from '../impl';
@@ -21,9 +22,14 @@ export class UpdatePaymentHandler
     const { booking_id } = newPayment;
 
     try {
-      await this.paymentRepository.update({ id }, { booking_id });
+      await this.paymentRepository.update(
+        { _id: new ObjectId(id) },
+        { booking_id },
+      );
 
-      const payment = await this.paymentRepository.findOne({ where: { id } });
+      const payment = await this.paymentRepository.findOne({
+        where: { _id: new ObjectId(id) },
+      });
 
       return payment;
     } catch (error) {

@@ -13,6 +13,7 @@ import {
   UpdateBookingDto,
   DeleteBookingDto,
   CommonService,
+  successResponse,
 } from '@app/common';
 
 @Controller('bookings')
@@ -56,7 +57,7 @@ export class BookingController {
   async deleteBookingById(
     @Payload() deleteBookingDto: DeleteBookingDto,
     @Ctx() context: RmqContext,
-  ): Promise<boolean> {
+  ): Promise<successResponse> {
     this.commonService.acknowledgeMessage(context);
 
     return this.bookingService.deleteBookingById(deleteBookingDto);

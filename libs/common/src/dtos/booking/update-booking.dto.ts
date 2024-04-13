@@ -1,6 +1,7 @@
 import { CreateBookingDto } from './create-booking.dto';
+import { ObjectId } from 'mongodb';
 
 export class UpdateBookingDto {
-  id: string;
+  id: ObjectId;
   updatedBooking: CreateBookingDto;
 }

@@ -2,6 +2,7 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ObjectId } from 'mongodb';
 import { UpdateBookingCommand } from '../impl/update-booking.command';
 import { BookingEntity } from '../../entities/booking.entity';
 
@@ -18,9 +19,14 @@ export class UpdateBookingHandler
     const { id, updatedBooking } = command.updateBookingDto;
     const { customer_id } = updatedBooking;
     try {
-      await this.bookingRepository.update({ id }, { customer_id });
+      await this.bookingRepository.update(
+        { _id: new ObjectId(id) },
+        { customer_id },
+      );
 
-      const booking = await this.bookingRepository.findOne({ where: { id } });
+      const booking = await this.bookingRepository.findOne({
+        where: { _id: new ObjectId(id) },
+      });
       return booking;
     } catch (error) {
       throw new InternalServerErrorException(error);

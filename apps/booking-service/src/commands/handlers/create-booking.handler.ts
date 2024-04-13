@@ -16,14 +16,16 @@ export class CreateBookingHandler
 
   async execute(command: CreateBookingCommand) {
     const { customer_id } = command.createBookingDto;
-    const booking = await this.bookingRepository.create();
-
-    booking.customer_id = customer_id;
-    booking.createdAt = new Date();
+    const createdAt = new Date();
+    const updatedAt = new Date();
+    const bookingData = await this.bookingRepository.create({
+      customer_id,
+      createdAt,
+      updatedAt,
+    });
 
     try {
-      await booking.save();
-      return booking;
+      return await this.bookingRepository.save(bookingData);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

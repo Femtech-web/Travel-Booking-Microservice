@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export class GetPaymentDto {
-  id: string;
+  id: ObjectId;
 }

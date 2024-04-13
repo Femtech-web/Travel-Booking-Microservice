@@ -1,9 +1,9 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity, Entity, ObjectId, ObjectIdColumn, Column } from 'typeorm';
 
 @Entity()
 export class BookingEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: string;
+  @ObjectIdColumn()
+  _id: ObjectId;
 
   @Column()
   customer_id: string;

@@ -57,7 +57,7 @@ export class UserGateway {
     return await this.commonService.sendEvent(
       this.userService,
       { cmd: 'get-single-user' },
-      { params },
+      { ...params },
     );
   }
 

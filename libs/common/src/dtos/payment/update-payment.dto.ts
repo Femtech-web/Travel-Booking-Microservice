@@ -1,6 +1,7 @@
 import { CreatePaymentDto } from './create-payment.dto';
+import { ObjectId } from 'mongodb';
 
 export class UpdatePaymentDto {
-  id: string;
+  id: ObjectId;
   updatedPayment: CreatePaymentDto;
 }

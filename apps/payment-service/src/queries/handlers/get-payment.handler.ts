@@ -2,6 +2,7 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { ObjectId } from 'mongodb';
 
 import { GetPaymentQuery } from '../impl';
 import { PaymentEntity } from '../../entities/payment.entity';
@@ -15,7 +16,9 @@ export class GetPaymentHandler implements IQueryHandler<GetPaymentQuery> {
 
   async execute(query: GetPaymentQuery) {
     const { id } = query.getPaymentDto;
-    const payment = await this.paymentRepository.findOne({ where: { id } });
+    const payment = await this.paymentRepository.findOne({
+      where: { _id: new ObjectId(id) },
+    });
 
     if (!payment) {
       throw new NotFoundException('Payment does not exist');

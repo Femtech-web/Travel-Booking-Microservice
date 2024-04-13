@@ -8,6 +8,7 @@ import {
   DeleteBookingDto,
   GetBookingDto,
   UpdateBookingDto,
+  successResponse,
 } from '@app/common';
 import { GetBookingQuery } from './queries/impl';
 import { BookingEntity } from './entities/booking.entity';
@@ -38,7 +39,7 @@ export class BookingService {
 
   async deleteBookingById(
     deleteBookingDto: DeleteBookingDto,
-  ): Promise<boolean> {
+  ): Promise<successResponse> {
     return this.commandBus.execute(new DeleteBookingCommand(deleteBookingDto));
   }
 }

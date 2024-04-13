@@ -12,7 +12,8 @@ import {
   CommonService,
   GetBookingDto,
   CreateBookingDto,
-  CurrentUser,
+  DeleteBookingDto,
+  successResponse,
 } from '@app/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { BookingModel } from '../models';
@@ -46,20 +47,22 @@ export class BookingGateway {
     );
   }
 
-  @Put('/')
+  @Put('/:id')
   async UpdateBooking(
-    @CurrentUser() id: string,
+    @Param('id') id: string,
     @Body() updatedBooking: CreateBookingDto,
   ): Promise<BookingModel> {
     return await this.commonService.sendEvent(
       this.bookingService,
       { cmd: 'update-booking' },
-      { ...updatedBooking, id },
+      { updatedBooking, id },
     );
   }
 
-  @Delete('/')
-  async DeleteBookingById(@CurrentUser() id: string): Promise<BookingModel> {
+  @Delete('/:id')
+  async DeleteBookingById(
+    @Param() id: DeleteBookingDto,
+  ): Promise<successResponse> {
     return await this.commonService.sendEvent(
       this.bookingService,
       { cmd: 'delete-booking' },
