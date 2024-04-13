@@ -28,6 +28,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
           useNewUrlParser: true,
           synchronize: true,
           logging: true,
+          ssl: true,
           authSource: 'admin',
           autoLoadEntities: true,
         };

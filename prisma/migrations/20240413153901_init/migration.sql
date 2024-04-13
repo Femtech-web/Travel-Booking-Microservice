@@ -16,8 +16,8 @@ CREATE TABLE "Credentials" (
     "id" TEXT NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 0,
     "lastPassword" TEXT NOT NULL DEFAULT '',
-    "passwordUpdatedAt" INTEGER NOT NULL DEFAULT 0,
-    "updatedAt" INTEGER NOT NULL DEFAULT 0,
+    "passwordUpdatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "Credentials_pkey" PRIMARY KEY ("id")
