@@ -2,7 +2,7 @@
 
 This repository demonstrates a microservices architecture using **NestJS**. The project consists of several distinct services, each serving a specific purpose. Let's dive into the details:
 
-![DESIGN](./docs/flight-booking-microservice.png)
+![DESIGN](./docs/Flight-booking-microservice.png)
 
 ## Services
 
