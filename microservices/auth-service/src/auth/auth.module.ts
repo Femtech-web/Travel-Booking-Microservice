@@ -10,4 +10,4 @@ import { TokenModule } from '../token/token.module';
   controllers: [AuthController],
   providers: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

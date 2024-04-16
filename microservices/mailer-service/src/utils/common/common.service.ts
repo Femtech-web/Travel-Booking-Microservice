@@ -3,7 +3,7 @@ import { RmqContext } from '@nestjs/microservices';
 
 @Injectable()
 export class CommonService {
-  constructor() { }
+  constructor() {}
 
   acknowledgeMessage(context: RmqContext) {
     const channel = context.getChannelRef();

@@ -26,7 +26,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly commonService: CommonService,
     private readonly tokenService: TokenService,
-  ) { }
+  ) {}
 
   @MessagePattern({ cmd: 'sign-up' })
   public async signUp(
