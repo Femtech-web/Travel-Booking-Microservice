@@ -1,0 +1,31 @@
+{
+  "name": "flight-booking-microservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install || true",
+    "lint": "npm-run-all lint:auth-service lint:user-service lint:booking-service lint:payment-service lint:mailer-service",
+    "lint:auth-service": "cd ./microservices/auth-service && npm run lint:staged",
+    "lint:user-service": "cd ./microservices/user-service && npm run lint:staged",
+    "lint:booking-service": "cd ./microservices/booking-service && npm run lint:staged",
+    "lint:payment-service": "cd ./microservices/payment-service && npm run lint:staged",
+    "lint:mailer-service": "cd ./microservices/mailer-service && npm run lint:staged"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "npm-run-all": "^4.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Femtech-web/flight-booking-microservice.git"
+  },
+  "keywords": [],
+  "author": "Akolade Oluwafemi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Femtech-web/flight-booking-microservice/issues"
+  },
+  "homepage": "https://github.com/Femtech-web/flight-booking-microservice#readme"
+}
