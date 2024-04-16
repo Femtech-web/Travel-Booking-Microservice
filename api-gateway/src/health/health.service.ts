@@ -27,7 +27,7 @@ export class HealthService {
       () =>
         this.httpHealthIndicator.pingCheck(
           'thrillers-api',
-          this.configService.get<string>('api-url'),
+          this.configService.get<string>('api_url'),
         ),
     ]);
   }

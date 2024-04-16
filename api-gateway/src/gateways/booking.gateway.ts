@@ -18,12 +18,12 @@ import {
   DeleteBookingDto,
 } from '../dtos/booking';
 
-@Controller('api/bookings')
+@Controller('api/v1/bookings')
 export class BookingGateway {
   constructor(
     @Inject('BOOKING_SERVICE') private readonly bookingService: ClientProxy,
     private readonly commonService: CommonService,
-  ) {}
+  ) { }
 
   @Get('/:id')
   public async GetBookingById(

@@ -4,6 +4,7 @@ export interface IConfig {
   testing: boolean;
   refresh_time: number;
   rabbitmq_url: string;
+  api_url: string;
   authQueue: string;
   userQueue: string;
   paymentQueue: string;

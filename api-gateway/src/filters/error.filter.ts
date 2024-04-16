@@ -16,7 +16,7 @@ import { validateServerError } from './helpers';
 
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) { }
 
   catch(error: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -47,7 +47,6 @@ export class ErrorFilter implements ExceptionFilter {
         message,
         timestamp: new Date().toISOString(),
         path: request.url,
-        error,
       },
       status,
     );

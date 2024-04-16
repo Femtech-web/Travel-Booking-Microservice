@@ -13,12 +13,12 @@ import { CurrentUser } from '../decorators';
 import { CommonService } from '../utils/common';
 import { PaymentModel } from '../models';
 
-@Controller('api/payment')
+@Controller('api/v1/payment')
 export class PaymentGateway {
   constructor(
     @Inject('PAYMENT_SERVICE') private readonly paymentService: ClientProxy,
     private readonly commonService: CommonService,
-  ) {}
+  ) { }
 
   @Get('/:id')
   async GetPaymentById(

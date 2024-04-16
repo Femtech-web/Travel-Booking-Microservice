@@ -25,7 +25,7 @@ import {
   EmailDto,
 } from '../dtos/auth';
 
-@Controller('api/auth')
+@Controller('api/v1/auth')
 export class AuthGateway {
   private readonly cookiePath = '/api/auth';
   private readonly cookieName: string = '';

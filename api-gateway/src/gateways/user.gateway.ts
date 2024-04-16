@@ -22,12 +22,12 @@ import {
   PasswordDto,
 } from '../dtos/user';
 
-@Controller('api/users')
+@Controller('api/v1/users')
 export class UserGateway {
   constructor(
     @Inject('USER_SERVICE') private readonly userService: ClientProxy,
     private readonly commonService: CommonService,
-  ) {}
+  ) { }
 
   @Get('/me')
   public async GetMe(@CurrentUser() id: string): Promise<IAuthResponseUser> {
