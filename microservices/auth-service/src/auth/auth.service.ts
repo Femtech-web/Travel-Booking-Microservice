@@ -40,7 +40,7 @@ export class AuthService {
     @Inject('MAILER_SERVICE') private readonly mailerService: ClientProxy,
     @Inject('USER_SERVICE') private readonly userService: ClientProxy,
     private readonly commonService: CommonService,
-  ) {}
+  ) { }
 
   public async signUp(dto: SignUpDto, domain?: string): Promise<IMessage> {
     const { name, email, password1, password2 } = dto;
@@ -199,7 +199,7 @@ export class AuthService {
       { cmd: 'reset-password' },
       { id, version, password1 },
     );
-    return this.commonService.generateMessage('Password reset successfully');
+    return this.commonService.generateMessage('Password reset successfull');
   }
 
   public async updatePassword(

@@ -18,7 +18,7 @@ import {
   DeleteBookingDto,
 } from '../dtos/booking';
 
-@Controller('api/v1/bookings')
+@Controller('api/v1/booking')
 export class BookingGateway {
   constructor(
     @Inject('BOOKING_SERVICE') private readonly bookingService: ClientProxy,

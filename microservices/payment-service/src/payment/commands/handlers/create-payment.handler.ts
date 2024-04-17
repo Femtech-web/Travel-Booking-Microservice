@@ -7,7 +7,7 @@ import { CreatePaymentCommand } from '../impl';
 import { PaymentEntity } from '../../../db/entities/payment.entity';
 import { StripeChargeService } from '../../stripeCharge/stripe-charge.service';
 
-const defaultCurrency = 'pln';
+const defaultCurrency = 'usd';
 
 @CommandHandler(CreatePaymentCommand)
 export class CreatePaymentHandler

@@ -31,7 +31,7 @@ This repository demonstrates a microservices architecture using **NestJS**. The 
 
 ### RabbitMQ Communication
 
-We use **RabbitMQ** as our message broker for communication between services. It ensures reliable and asynchronous communication.
+I use **RabbitMQ** as our message broker for communication between services. It ensures reliable and asynchronous communication.
 
 ### Different Databases
 
@@ -40,7 +40,7 @@ We use **RabbitMQ** as our message broker for communication between services. It
 
 ### CQRS Implementation
 
-We've implemented the **Command Query Responsibility Segregation (CQRS)** pattern in the **Booking Service** and **Payment Service**. This separation of read and write operations enhances scalability and maintainability.
+I've implemented the **Command Query Responsibility Segregation (CQRS)** pattern in the **Booking Service** and **Payment Service**. This separation of read and write operations enhances scalability and maintainability.
 
 ### OAuth2 with JWT
 
@@ -49,7 +49,7 @@ We've implemented the **Command Query Responsibility Segregation (CQRS)** patter
 
 ### Stripe Integration
 
-We've integrated **Stripe** as our payment service provider. It handles payment processing securely.
+I've integrated **Stripe** as our payment service provider. It handles payment processing securely.
 
 ### Redis Caching
 
@@ -61,7 +61,16 @@ Each service is containerized using **Docker**, ensuring consistent deployment a
 
 ### Husky for Development
 
-We've set up **Husky** to streamline development workflows. It enforces code quality checks and runs tests before commits.
+I've set up **Husky** to streamline development workflows. It enforces code quality checks and runs tests before commits.
+
+### Getting Started
+
+To get started with the Flight Booking System, follow the instructions provided in the Docs folder files for each service:
+
+- Auth Service: [Readme](https://github.com/Femtech-web/flight-booking-microservice/tree/main/docs/auth-service.md)
+- User Service: [Readme](https://github.com/Femtech-web/flight-booking-microservice/tree/main/docs/user-service.md)
+- Booking Service: [Readme](https://github.com/Femtech-web/flight-booking-microservice/tree/main/docs/booking-service.md)
+- Payment Service: [Readme](https://github.com/Femtech-web/flight-booking-microservice/tree/main/microservices/payment-service.md)
 
 ### Technologies Used
 
