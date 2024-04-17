@@ -22,12 +22,12 @@ import {
   PasswordDto,
 } from '../dtos/user';
 
-@Controller('api/v1/users')
+@Controller('api/v1/user')
 export class UserGateway {
   constructor(
     @Inject('USER_SERVICE') private readonly userService: ClientProxy,
     private readonly commonService: CommonService,
-  ) { }
+  ) {}
 
   @Get('/me')
   public async GetMe(@CurrentUser() id: string): Promise<IAuthResponseUser> {
@@ -38,10 +38,10 @@ export class UserGateway {
     );
   }
 
-  @Get()
+  @Get('/')
   public async GetAllUsers(
     @Query() params: PaginationQueryDto,
-  ): Promise<IAuthResponseUser> {
+  ): Promise<IAuthResponseUser[]> {
     return await this.commonService.sendEvent(
       this.userService,
       { cmd: 'fetch-all-users' },
@@ -49,7 +49,6 @@ export class UserGateway {
     );
   }
 
-  @Public()
   @Get('/:id')
   public async GetUser(@Param() params: GetUserParams): Promise<IResponseUser> {
     return await this.commonService.sendEvent(

@@ -16,7 +16,7 @@ export class HealthService {
     private readonly memoryHealthIndicator: MemoryHealthIndicator,
     private readonly microserviceHealthIndicator: MicroserviceHealthIndicator,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   checkHealth(): string {
     return 'API Gateway is working correctly';

@@ -1,4 +1,4 @@
-import { IAuthResponse, IAuthResult } from '../interfaces/';
+import { IAuthResponse, IAuthResult } from '../interfaces';
 import { AuthResponseUserMapper } from './auth-response-user.mapper';
 
 export class AuthResponseMapper implements IAuthResponse {

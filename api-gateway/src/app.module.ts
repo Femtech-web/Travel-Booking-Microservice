@@ -49,4 +49,4 @@ import {
     },
   ],
 })
-export class ApiGatewayModule { }
+export class ApiGatewayModule {}

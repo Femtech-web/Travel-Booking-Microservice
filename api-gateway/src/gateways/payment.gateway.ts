@@ -18,7 +18,7 @@ export class PaymentGateway {
   constructor(
     @Inject('PAYMENT_SERVICE') private readonly paymentService: ClientProxy,
     private readonly commonService: CommonService,
-  ) { }
+  ) {}
 
   @Get('/:id')
   async GetPaymentById(

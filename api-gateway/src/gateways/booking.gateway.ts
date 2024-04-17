@@ -23,7 +23,7 @@ export class BookingGateway {
   constructor(
     @Inject('BOOKING_SERVICE') private readonly bookingService: ClientProxy,
     private readonly commonService: CommonService,
-  ) { }
+  ) {}
 
   @Get('/:id')
   public async GetBookingById(
