@@ -6,12 +6,12 @@ import { microserviceOptions } from './configs/microservice-connection.config';
 const logger = new Logger('AuthMicroservice');
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(
-    AppModule,
-    microserviceOptions,
-  );
+  const app = await NestFactory.create(AppModule);
 
-  await app.listen();
+  app.connectMicroservice(microserviceOptions);
+  app.startAllMicroservices();
+
+  await app.listen(8005);
   logger.log('Microservice is listening');
 }
 bootstrap();
