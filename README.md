@@ -1,4 +1,4 @@
-# Flight Booking Microservices
+# Travel Booking Microservices
 
 This repository demonstrates a microservices architecture using **NestJS**. The project consists of several distinct services, each serving a specific purpose. Let's dive into the details:
 
@@ -23,7 +23,7 @@ This repository demonstrates a microservices architecture using **NestJS**. The 
 
 - **Booking Service:**
 
-  - **Ticket Booking:** Enables users to book flight tickets.
+  - **Ticket Booking:** Enables users to book travel tickets.
   - **Ticket Cancellation:** Allows users to cancel their booked tickets.
   - **Ticket Update:** Allows users to update their booked tickets.
 
