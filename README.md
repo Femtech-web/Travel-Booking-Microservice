@@ -65,7 +65,7 @@ I've set up **Husky** to streamline development workflows. It enforces code qual
 
 ### Getting Started
 
-To get started with the Flight Booking System, follow the instructions provided in the Docs folder files for each service:
+To get started with the Travel Booking System, follow the instructions provided in the Docs folder files for each service:
 
 - Auth Service: [Readme](https://github.com/Femtech-web/flight-booking-microservice/tree/main/docs/auth-service.md)
 - User Service: [Readme](https://github.com/Femtech-web/flight-booking-microservice/tree/main/docs/user-service.md)
